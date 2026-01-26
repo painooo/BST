@@ -25,8 +25,9 @@ class Tree {
         let median = sortedArray[medianIndex];
         let right = sortedArray.slice(medianIndex+1);
         let left = sortedArray.slice(0, medianIndex);
-        let test = new Node(median, this.buildTree(left), this.buildTree(right))
-        return test;
+        this.root = new Node(median, this.buildTree(left), this.buildTree(right))
+        return this.root;
     }
+
 }
 console.log(new Tree([1, 5, 9, 14, 23, 27]).buildTree());
