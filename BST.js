@@ -1,5 +1,5 @@
 class Node{
-    constructor(value, left, right){
+    constructor(value, left = null, right = null){
         this.value = value;
         this.left = left;
         this.right = right;
@@ -8,7 +8,7 @@ class Node{
 class Tree {
     constructor(arr){
         this.arr = arr;
-        this.root;
+        this.root = {};
     }
     #sortArr(array){
         let obj = {}
@@ -19,7 +19,8 @@ class Tree {
     }
     buildTree(array = this.arr){
         if (array.length == 0) return null;
-        if (array.length == 1) return array[0];
+        if (array.length == 1) return new Node(array[0]); // So every node is a Node other than null
+
         let sortedArray = this.#sortArr(array);
         let medianIndex = Math.floor(sortedArray.length/2);
         let median = sortedArray[medianIndex];
@@ -28,6 +29,7 @@ class Tree {
         this.root = new Node(median, this.buildTree(left), this.buildTree(right))
         return this.root;
     }
-
+    
 }
-console.log(new Tree([1, 5, 9, 14, 23, 27]).buildTree());
+const tree = new Tree([1, 5, 9, 14, 23, 27]);
+console.log(tree.buildTree());
