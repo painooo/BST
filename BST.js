@@ -29,7 +29,32 @@ class Tree {
         this.root = new Node(median, this.buildTree(left), this.buildTree(right))
         return this.root;
     }
-    
+    pickDir(nodeVal, val){
+        return nodeVal > val ? "left" : "right"
+    }
+    iterate(value){
+        let node = this.root;
+        while (node != null) {
+            if (node.value === value) {
+                return 0;
+            }
+            let dir = this.pickDir(node.value, value);
+            if (node[dir] == null) { // So it stops before setting node to a null value
+                return [node, dir]; // returns previous node to where it's meant to be inserted
+            }
+            node = node[dir];
+        }
+    }
+    insert(value){
+        const item = new Node(value);
+        const node = this.iterate(value);
+        if (node == 0) return this.root;
+        let [pos, dir] = node;
+        pos[dir] = item;
+        return this.root;
+    }
 }
 const tree = new Tree([1, 5, 9, 14, 23, 27]);
 console.log(tree.buildTree());
+console.log(tree.insert(28));
+console.log(tree.insert(28));
