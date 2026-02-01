@@ -5,10 +5,9 @@ class Node{
         this.right = right;
     }
 }
-class Tree {
+export class Tree {
     constructor(arr){
         this.arr = arr;
-        this.tempArr = [];
         this.root = {};
     }
     #sortArr(array){
@@ -155,8 +154,8 @@ class Tree {
         return depth == 0 ? null : depth;
     }
     updArr(){
-        this.tempArr=[];
-        let arr=this.tempArr;
+        this.arr=[];
+        let arr=this.arr;
         return (item) => arr.push(item); 
     }
     maxDepth(value){
@@ -182,7 +181,7 @@ class Tree {
     isBalanced(){
         let arr = this.updArr();
         this.levelOrderForEach(arr);
-        for (let i of this.tempArr){
+        for (let i of this.arr){
             let node = this.find(i);
             let left = null;
             let right = null;
@@ -190,16 +189,14 @@ class Tree {
             if (node.right) right = this.depth(node.right.value);
             let diff = right-left;
             if (diff > 1) {
-                console.log(diff);
                 return false;
             }
         }
         return true;
     }
+    rebalance(){
+        let arr = this.updArr();
+        this.preOrderForEach(arr);
+        this.buildTree();
+    }
 }
-const tree = new Tree([1,5, 9, 14, 23, 27]);
-console.log(tree.buildTree());
-const printIt = (item) => {
-    console.log(item);
-}
-console.log(tree.isBalanced())
