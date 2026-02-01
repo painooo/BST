@@ -38,7 +38,6 @@ class Tree {
         let dir2;
         while (node != null) {
             dir = this.pickDir(node.value, value);
-            //if (node[dir] == null) return [node, dir];
             if (node[dir].value == value) return [node, dir];
             dir2 = this.pickDir(node[dir].value, value);
             if (node[dir][dir2] == null) return [node, dir, dir2]; // So it stops 2 steps before setting node to a null value  // returns previous node and where it's meant to be inserted
@@ -55,7 +54,7 @@ class Tree {
         }
         return 0;
     }
-    deleteItem(value){ // If has children ...
+    deleteItem(value){
         let node = this.iterate(value);
         let [pos, dir] = node;
         let item = pos[dir]
@@ -138,6 +137,9 @@ class Tree {
         } catch (e) {
             console.error(e);
         }
+    }
+    height(value){
+
     }
     printTree(){
         console.log(this.root);
