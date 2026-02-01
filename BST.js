@@ -75,6 +75,70 @@ class Tree {
             return pos[dir][dir2];
         }
     }
+    levelOrderForEach(callback) {
+        try {
+            if (callback == undefined) {
+                throw "A callback is required";
+            }
+            let queue = [this.root];
+            while (queue.length != 0) {
+                if (queue[0].left) queue.push(queue[0].left);
+                if (queue[0].right) queue.push(queue[0].right);
+                callback(queue[0].value);
+                queue.shift();
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+    postOrderForEach(callback, root=this.root){
+        try {
+            if (callback == undefined) {
+                throw "A call back is required";
+            }
+            if (root == null) {
+                return 0;
+            }
+            this.postOrderForEach(callback, root.left);
+            this.postOrderForEach(callback, root.right);
+            callback(root.value);
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    preOrderForEach(callback, root=this.root){
+        try {
+            if (callback == undefined) {
+                throw "A call back is required";
+            }
+            if (root == null) {
+                return 0;
+            }
+            callback(root.value);
+            this.preOrderForEach(callback, root.left);
+            this.preOrderForEach(callback, root.right);
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    inOrderForEach(callback, root=this.root){
+        try {
+            if (callback == undefined) {
+                throw "A call back is required";
+            }
+            if (root == null) {
+                return 0;
+            }
+            this.inOrderForEach(callback, root.left);
+            callback(root.value);
+            this.inOrderForEach(callback, root.right);
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
     printTree(){
         console.log(this.root);
         return 0;
@@ -82,6 +146,7 @@ class Tree {
 }
 const tree = new Tree([1,5, 9, 14, 23, 27]);
 console.log(tree.buildTree());
-tree.insert(28);
-tree.deleteItem(30);
-tree.printTree();
+const printIt = (item) => {
+    console.log(item);
+}
+tree.levelOrderForEach(printIt);
