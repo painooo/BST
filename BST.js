@@ -34,27 +34,45 @@ class Tree {
     }
     iterate(value){
         let node = this.root;
+        let dir;
+        let dir2;
         while (node != null) {
-            if (node.value === value) {
-                return 0;
-            }
-            let dir = this.pickDir(node.value, value);
-            if (node[dir] == null) { // So it stops before setting node to a null value
-                return [node, dir]; // returns previous node to where it's meant to be inserted
-            }
+            dir = this.pickDir(node.value, value);
+            //if (node[dir] == null) return [node, dir];
+            if (node[dir].value == value) return [node, dir];
+            dir2 = this.pickDir(node[dir].value, value);
+            if (node[dir][dir2] == null) return [node, dir, dir2]; // So it stops 2 steps before setting node to a null value  // returns previous node and where it's meant to be inserted
             node = node[dir];
         }
     }
     insert(value){
-        const item = new Node(value);
         const node = this.iterate(value);
-        if (node == 0) return this.root;
+        let [pos, dir, dir2] = node;
+        if (dir2 == null) {
+            pos[dir] = new Node(value);
+        } else {
+            pos[dir][dir2] = new Node(value);
+        }
+        return 0;
+    }
+    deleteItem(value){ // If has children ...
+        let node = this.iterate(value);
         let [pos, dir] = node;
-        pos[dir] = item;
-        return this.root;
+        let item = pos[dir]
+        if (item.value == value) {
+            pos[dir] = null
+            if (item.right) this.insert(item.right.value);
+            if (item.left) this.insert(item.left.value);
+        }
+        return 0;
+    }
+    printTree(){
+        console.log(this.root);
+        return 0;
     }
 }
-const tree = new Tree([1, 5, 9, 14, 23, 27]);
+const tree = new Tree([1,5, 9, 14, 23, 27]);
 console.log(tree.buildTree());
-console.log(tree.insert(28));
-console.log(tree.insert(28));
+tree.insert(28);
+tree.deleteItem(30);
+tree.printTree();
