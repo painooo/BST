@@ -8,6 +8,7 @@ class Node{
 class Tree {
     constructor(arr){
         this.arr = arr;
+        this.tempArr = [];
         this.root = {};
     }
     #sortArr(array){
@@ -66,6 +67,7 @@ class Tree {
         return 0;
     }
     find(value){
+        if (value == this.root.value) return this.root;
         let node = this.iterate(value);
         let [pos, dir, dir2] = node;
         if (dir2 == null) {
@@ -74,12 +76,15 @@ class Tree {
             return pos[dir][dir2];
         }
     }
-    levelOrderForEach(callback) {
+    levelOrderForEach(callback, root=this.root) {
         try {
             if (callback == undefined) {
                 throw "A callback is required";
             }
-            let queue = [this.root];
+            let queue = [root];
+            if (queue[0] == null) {
+                return 0;
+            }
             while (queue.length != 0) {
                 if (queue[0].left) queue.push(queue[0].left);
                 if (queue[0].right) queue.push(queue[0].right);
@@ -138,12 +143,58 @@ class Tree {
             console.error(e);
         }
     }
+    depth(value){
+        let node = this.root;
+        let depth = 0;
+        while (node != null) { 
+            if (node.value == value) break;
+            let dir = this.pickDir(node.value, value);
+            node = node[dir];
+            depth++;
+        }
+        return depth == 0 ? null : depth;
+    }
+    updArr(){
+        this.tempArr=[];
+        let arr=this.tempArr;
+        return (item) => arr.push(item); 
+    }
+    maxDepth(value){
+        let node = this.find(value);
+        let arr = this.updArr();
+        this.levelOrderForEach(arr, node);
+        let numOne = this.arr.slice(-1);
+        let numTwo = this.arr.slice(-2, -1);
+        if (numOne > numTwo) {
+            return this.depth(numOne);
+        } else {
+            return this.depth(numTwo);
+        }
+    }
     height(value){
-
+        return this.maxDepth(value)-this.depth(value);
     }
     printTree(){
         console.log(this.root);
         return 0;
+    }
+
+    isBalanced(){
+        let arr = this.updArr();
+        this.levelOrderForEach(arr);
+        for (let i of this.tempArr){
+            let node = this.find(i);
+            let left = null;
+            let right = null;
+            if (node.left) left = this.depth(node.left.value);
+            if (node.right) right = this.depth(node.right.value);
+            let diff = right-left;
+            if (diff > 1) {
+                console.log(diff);
+                return false;
+            }
+        }
+        return true;
     }
 }
 const tree = new Tree([1,5, 9, 14, 23, 27]);
@@ -151,4 +202,4 @@ console.log(tree.buildTree());
 const printIt = (item) => {
     console.log(item);
 }
-tree.levelOrderForEach(printIt);
+console.log(tree.isBalanced())
