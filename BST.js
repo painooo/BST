@@ -66,6 +66,15 @@ class Tree {
         }
         return 0;
     }
+    find(value){
+        let node = this.iterate(value);
+        let [pos, dir, dir2] = node;
+        if (dir2 == null) {
+            return pos[dir];
+        } else {
+            return pos[dir][dir2];
+        }
+    }
     printTree(){
         console.log(this.root);
         return 0;
