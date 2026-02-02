@@ -4,22 +4,20 @@ class Pos {
         this.x = x;
         this.y = y;
         this.adj = [];
-        this.height = height;
         this.parent;
     }
 }
 function makeMoves(position){
     let x = position.x;
     let y = position.y;
-    let height = position.height+1;
     let m1 = 2;
     let m2 = 1;
     let moves = [];
     for (let i = 0; i < 2; i++) {
-        moves.push(new Pos(x+m1, y+m2, height));
-        moves.push(new Pos(x-m1, y+m2, height));
-        moves.push(new Pos(x+m1, y-m2, height));
-        moves.push(new Pos(x-m1, y-m2, height));
+        moves.push(new Pos(x+m1, y+m2));
+        moves.push(new Pos(x-m1, y+m2));
+        moves.push(new Pos(x+m1, y-m2));
+        moves.push(new Pos(x-m1, y-m2,));
         m1 = 1;
         m2 = 2;
     }
